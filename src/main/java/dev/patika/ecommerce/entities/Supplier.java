@@ -27,5 +27,5 @@ public class Supplier {
     @Column(name = "supplier_mail")
     private String contactMail;
     @OneToMany(mappedBy = "supplier")
-    private List<Supplier> products;
+    private List<Product> products;
 }

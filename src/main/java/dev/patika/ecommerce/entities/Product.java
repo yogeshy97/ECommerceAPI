@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Table(name = "products")
 @Data
@@ -23,12 +21,10 @@ public class Product {
     private double price;
     @Column(name = "product_stock")
     private int stock;
-
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "product_supplier_id", referencedColumnName = "supplier_id")
     private Supplier supplier;
-
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "product_category_id", referencedColumnName = "category_id")
     private Category category;
 
