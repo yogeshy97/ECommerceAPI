@@ -1,7 +1,6 @@
 package dev.patika.ecommerce.api.v1;
 
 import dev.patika.ecommerce.business.abstracts.ICategoryService;
-import dev.patika.ecommerce.business.concretes.CategoryService;
 import dev.patika.ecommerce.core.config.modelMapper.IModelMapperService;
 import dev.patika.ecommerce.core.result.Result;
 import dev.patika.ecommerce.core.result.ResultData;
@@ -12,12 +11,9 @@ import dev.patika.ecommerce.dto.response.CursorResponse;
 import dev.patika.ecommerce.dto.response.category.CategoryResponse;
 import dev.patika.ecommerce.entities.Category;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/categories")
@@ -58,11 +54,19 @@ public class CategoryController {
 
             return ResultHelper.cursor(categoryResponsePage);
     }
+
     @PutMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CategoryResponse> update(@Valid @RequestBody CategoryUpdateRequest categoryUpdateRequest) {
         Category updateCategory = this.modelMapperService.forRequest().map(categoryUpdateRequest, Category.class);
         this.categoryService.update(updateCategory);
         return ResultHelper.success(this.modelMapperService.forResponse().map(updateCategory, CategoryResponse.class));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") int id) {
+        this.categoryService.delete(id);
+        return ResultHelper.Ok();
     }
 }
