@@ -1,5 +1,4 @@
 # ECommerceAPI
-# ECommerceAPI
 
 A simple and extensible RESTful e-commerce API built with Java 17 and Spring Boot.  
 Supports product, category, and supplier management with a clean layered architecture and DTO usage.
