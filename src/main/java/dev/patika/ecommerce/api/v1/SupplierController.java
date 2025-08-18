@@ -25,6 +25,7 @@ public class SupplierController {
         this.supplierService = supplierService;
         this.modelMapperService = modelMapperService;
     }
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<SupplierResponse> save(@Valid @RequestBody SupplierSaveRequest supplierSaveRequest) {
@@ -32,6 +33,7 @@ public class SupplierController {
         this.supplierService.save(saveSupplier);
         return ResultHelper.created(this.modelMapperService.forResponse().map(saveSupplier, SupplierResponse.class));
     }
+
     @PutMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<SupplierResponse> save(@Valid @RequestBody SupplierUpdateRequest supplierUpdateRequest) {
@@ -39,6 +41,7 @@ public class SupplierController {
         this.supplierService.update(updateSupplier);
         return ResultHelper.success(this.modelMapperService.forResponse().map(updateSupplier, SupplierResponse.class));
     }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<SupplierResponse> get(@PathVariable int id) {

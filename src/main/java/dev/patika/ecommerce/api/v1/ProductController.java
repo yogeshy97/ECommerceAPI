@@ -9,6 +9,7 @@ import dev.patika.ecommerce.core.result.ResultData;
 import dev.patika.ecommerce.core.utilities.ResultHelper;
 import dev.patika.ecommerce.dto.request.category.CategorySaveRequest;
 import dev.patika.ecommerce.dto.request.product.ProductSaveRequest;
+import dev.patika.ecommerce.dto.response.CursorResponse;
 import dev.patika.ecommerce.dto.response.category.CategoryResponse;
 import dev.patika.ecommerce.dto.response.product.ProductResponse;
 import dev.patika.ecommerce.dto.response.supplier.SupplierResponse;
@@ -16,6 +17,7 @@ import dev.patika.ecommerce.entities.Category;
 import dev.patika.ecommerce.entities.Product;
 import dev.patika.ecommerce.entities.Supplier;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,5 +62,16 @@ public class ProductController {
     public ResultData<SupplierResponse> getSupplier(@PathVariable int id) {
         Product product = this.productService.get(id);
         return ResultHelper.success(this.modelMapperService.forResponse().map(product.getSupplier(), SupplierResponse.class));
+    }
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<CursorResponse<ProductResponse>> cursor(
+            @RequestParam(name = "page",required = false,defaultValue = "0")int page,
+            @RequestParam(name = "pageSize",required = false,defaultValue = "10") int pageSize
+    ) {
+        Page<Product> productPage = this.productService.cursor(page, pageSize);
+        Page<ProductResponse> productResponsePage = productPage
+                .map(product -> modelMapperService.forResponse().map(product, ProductResponse.class));
+        return ResultHelper.cursor(productResponsePage);
     }
 }
